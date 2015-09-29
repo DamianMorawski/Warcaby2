@@ -13,55 +13,83 @@ import javax.swing.JPanel;
 	public class Gui extends JFrame implements MouseListener {
 		public Pole pole1;
 		public JPanel panel;
-		public JPanel[] panele;
+		public JPanel[][] panele;
 		public JLabel label1;
 		public JLabel label2;
 		private Object[] pionekgracza2;
+		//majac anonimowe labele a nie anonimowe panele bede mogl sie odniesc do labelki?
+		//tablica paneli i pol musi byc widoczna wszedzie
+	public void ruch(Pole[][] tab_pole,int x,int y){
+		tab_pole[x][y].getPodpis().setText("POP");
 		
-//		public enum Kolor_Pola{
-//			czarny,bialy;
-//			}
-//		 Gui.Kolor_Pola kolor1 = Gui.Kolor_Pola.czarny;
-//		 Gui.Kolor_Pola kolor2 = Gui.Kolor_Pola.bialy;
-	Pole[][] inicjuj_tablice(){
-			
-			 Pole[][] tab_pole=new Pole[8][8];
-			 Color kolor_startu;
-			 for(int i=0; i<8;i++)
-			 {
-				 		if(i==0 || i==2 || i==4 || i==6){//kolor startu
-				 				kolor_startu=Color.white;
-				 		}else{
-				 				kolor_startu=Color.black;
-				 		}//koniec kolor staru
-					 
-				 for(int j=0; j<8; j++){
-					 tab_pole[i][j]=new Pole(i,j,kolor_startu);
-					 		if(kolor_startu==Color.white){
-					 				kolor_startu=Color.black;
-					 		}else{
-					 				kolor_startu=Color.white;
-					 				
-					 			 }
-				 					   }
-			  }
-			 
-	 return tab_pole;
-		 }
+	}
+
+	public Pole[][] inicjuj_tablice() {
+		JPanel[][] panele = new JPanel[8][8];
+		Gracz gracz3=new Gracz("Alan",Color.BLUE);
+		Gracz gracz4=new Gracz("Bob",Color.RED);
+		int licznik=0;
+		Pole[][] tab_pole = new Pole[8][8];
+		Color kolor_startu;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+
+				if ((i + j) % 2 == 1) {
+					kolor_startu = Color.black;
+					out.println(+licznik);
+					
+					
+					switch (licznik) {
+					  case 0: case 1: case 2: case 3: case 4: case 5:case 6: case 7:case 8: case 9:case 10: case 11:
+						  tab_pole[i][j] = new Pole(i, j, kolor_startu,gracz3, new JLabel(gracz3.getNazwa()));
+						  licznik++;
+						
+						  panele[i][j]=new JPanel();	
+						  panele[i][j].setBackground(tab_pole[i][j].getColor());
+						  panele[i][j].add(tab_pole[i][j].getPodpis());
+							add(panele[i][j]);
+						  break;
+
+					  case 12: case 13: case 14: case 15: case 16: case 17:case 18: case 19:
+						  tab_pole[i][j] = new Pole(i, j, kolor_startu,null, new JLabel(""));
+						 
+						  licznik++;
+						  panele[i][j]=new JPanel();	
+						  panele[i][j].setBackground(tab_pole[i][j].getColor());
+						  panele[i][j].add(tab_pole[i][j].getPodpis());
+							add(panele[i][j]);
+						  break;
+					  case 20: case 21:case 22: case 23:case 24: case 25: case 26: case 27: case 28: case 29:case 30: case 31:
+						tab_pole[i][j] = new Pole(i, j, kolor_startu, gracz4,new JLabel(gracz4.getNazwa()));
+						licznik++;
+						
+						  panele[i][j]=new JPanel();	
+						  panele[i][j].setBackground(tab_pole[i][j].getColor());
+						  panele[i][j].add(tab_pole[i][j].getPodpis());
+							add(panele[i][j]);
+						 break;
+					default:
+						out.println("blad404"+licznik);
+						 break;
+					}
+					
+				} else {
+					kolor_startu = Color.white;
+					tab_pole[i][j] = new Pole(i, j, kolor_startu,null,null);
+					  panele[i][j]=new JPanel();	
+					  panele[i][j].setBackground(tab_pole[i][j].getColor());
+					 // panele[i][j].add(tab_pole[i][j].getPodpis());
+						add(panele[i][j]);
+					
+				}
+			}
+		}
+		//tab_pole[0][5].getPodpis().setText("POP");
+
+		return tab_pole;
+	}
 		
-		void rysuj_szachownice(){
-		setLayout(new GridLayout(8, 8));
-		//JPanel panel=new JPanel();
-		for(int i=1; i<9; i++){
-		pole1=new Pole(1,i,Color.white);
-		//pole1.setBackground(Color.white);
-		add(pole1);
-		i++;
-		pole1=new Pole(1,i,Color.black);
-		//pole1.setBackground(Color.black);
-		add(pole1);
-		}
-		}
+		
 		//-------------------------------------------------------------------------------------------------------------------
 		public Gui() {
 			super( "Warcaby" );
@@ -78,69 +106,7 @@ import javax.swing.JPanel;
 			
 			Pole [][] pol=new Pole[8][8]; //tab pol wszystkich
 			pol=inicjuj_tablice();
-			panele=new JPanel[32];//tablica czarnych pol
-			int k=0;
-			for(int i=0;i<8 ; i++){
-				for(int j=0;j<8;j++){
-					System.out.println(pol[i][j].getPozycjaX()+"  "+pol[i][j].getPozycjaY()+"  "+pol[i][j].getColor());
-					if(pol[i][j].getColor()==Color.black){
-					panel=new JPanel();	
-					panel.setBackground(pol[i][j].getColor());
-					panele[k]=panel;
-					add(panel);
-					k++;
-					}
-					else{
-					panel=new JPanel();
-					panel.setBackground(pol[i][j].getColor());
-					add(panel);
-					}
-				}
-			}
-			
-			
-			//tworzymy graczy i pionki
-			Gracz Gracz1=new Gracz("gracz1");
-			Gracz Gracz2=new Gracz("gracz2");
-			 Pionek[] pionekgracza1 = new Pionek[12];
-			for(int i = 0, j=1; i<4; i++, j+=2){
-				pionekgracza1[i] = new Pionek(Gracz1, 0,j, new JLabel(Gracz1.getNazwa()) );
-				panele[i].add(pionekgracza1[i].getLabel());
-			}
-			for(int i = 4, j=0; i<8; i++, j+=2){
-				pionekgracza1[i] = new Pionek(Gracz1, 1,j, new JLabel(Gracz1.getNazwa()) );
-				panele[i].add(pionekgracza1[i].getLabel());
-			}
-			for(int i = 8, j=2; i<12; i++, j+=2){
-				pionekgracza1[i] = new Pionek(Gracz1, 2,j, new JLabel(Gracz1.getNazwa()) );
-				panele[i].add(pionekgracza1[i].getLabel());
-			}
-//2 gracz
-		
-			Pionek[] pionekgracza2 = new Pionek[12];
-			for(int i = 0, j=6; i<4; i++, j-=2){
-				pionekgracza2[i] = new Pionek(Gracz2, 7,j, new JLabel(Gracz2.getNazwa()) );
-				panele[31-i].add(pionekgracza2[i].getLabel());
-		
-			}
-			
-			for(int i = 4, j=7; i<8; i++, j-=2){
-				pionekgracza2[i] = new Pionek(Gracz2, 6,j, new JLabel(Gracz2.getNazwa()) );
-				panele[31-i].add(pionekgracza2[i].getLabel());
-			
-			}
-			
-			for(int i = 8, j=6; i<12; i++, j-=2){
-				pionekgracza2[i] = new Pionek(Gracz2, 5,j, new JLabel(Gracz2.getNazwa()) );
-				panele[31-i].add(pionekgracza2[i].getLabel());
-			
-			}
 
-			out.println(pionekgracza2[10].getPozycjaX()+"  "+(pionekgracza2[10].getPozycjaY()));
-			
-			pionekgracza2[10].setPozycjaX(4);
-			pionekgracza2[10].setPozycjaY(1);
-			out.println(pionekgracza2[10].getPozycjaX()+"  "+(pionekgracza2[10].getPozycjaY()));
 			setVisible(true);
 			repaint();
 		}
@@ -169,14 +135,14 @@ import javax.swing.JPanel;
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			System.out.println(e.getX()+"  "+e.getY());
-			int x=e.getX()/100;
+		//	System.out.println(e.getY()+"  "+e.getX());
 			int y=e.getY()/100;
-			System.out.println(x+"  "+y);
-			for(int i=0;i<12;i++){
-				///
-				
-			}
+			int x=e.getX()/100;
+			System.out.println(y+"  "+x);
+//			for(int i=0;i<12;i++){
+//				///
+//				
+//			}
 			
 			repaint();
 			

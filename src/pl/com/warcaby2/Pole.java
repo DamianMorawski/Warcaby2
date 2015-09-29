@@ -3,21 +3,34 @@ package pl.com.warcaby2;
 import java.awt.Color;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Pole extends JPanel {
 	private int pozycjaX;
 	private int pozycjaY;
 	private Color color;
+	private Gracz wlasciciel;
+	private JLabel podpis;
 	
-	public Pole(int pozycjaX,int pozycjaY,Color color){
+	public Pole(int pozycjaX,int pozycjaY,Color color,Gracz wlasciciel,JLabel podpis){
 		this.pozycjaX=pozycjaX;
 		this.pozycjaY=pozycjaY;
 		
 		//this.setBackground(color);
 		this.color=color;
+		this.wlasciciel=wlasciciel;
+		this.podpis=podpis;
+		if(podpis!= null && wlasciciel != null)
+		this.podpis.setForeground(wlasciciel.getKolor_gracza());
 	}
-//gettery settery
+public JLabel getPodpis() {
+		return podpis;
+	}
+	public void setPodpis(JLabel podpis) {
+		this.podpis = podpis;
+	}
+	//gettery settery
 	public int getPozycjaX() {
 		return pozycjaX;
 	}
@@ -34,21 +47,16 @@ public class Pole extends JPanel {
 		this.pozycjaY = pozycjaY;
 	}
 
-//	public JPanel getPole() {
-//		return pole;
-//	}
-//
-//	public void setPole(JPanel pole) {
-//		this.pole = pole;
-//	}
 
 	public Color getColor() {
 		return color;
 	}
-//
-//	public void setColor(Color color) {
-//		this.color = color;
-//	}
+	public Gracz getWlasciciel() {
+		return wlasciciel;
+	}
+	public void setWlasciciel(Gracz wlasciciel) {
+		this.wlasciciel = wlasciciel;
+	}
 
 
 
