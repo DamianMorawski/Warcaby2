@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,10 +20,15 @@ import javax.swing.JPanel;
 		public JLabel label1;
 		public JLabel label2;
 		private Object[] pionekgracza2;
+		public Pole [][] pol;
+		public List<String> klikniecia;
+		
 		//majac anonimowe labele a nie anonimowe panele bede mogl sie odniesc do labelki?
 		//tablica paneli i pol musi byc widoczna wszedzie
-	public void ruch(Pole[][] tab_pole,int x,int y){
-		tab_pole[x][y].getPodpis().setText("POP");
+	public void ruch(Pole[][] tab_pole,int x,int y,String nazwa,Color kolorek){
+		
+		tab_pole[x][y].getPodpis().setText(nazwa);
+		tab_pole[x][y].getPodpis().setForeground(kolorek);;
 		
 	}
 
@@ -104,14 +112,15 @@ import javax.swing.JPanel;
 			//rysuj_szachownice();
 			//RYSUJEMY GUI 64 pola
 			
-			Pole [][] pol=new Pole[8][8]; //tab pol wszystkich
+			 pol=new Pole[8][8]; //tab pol wszystkich
 			pol=inicjuj_tablice();
-
+			 klikniecia = new ArrayList<String>();
 			setVisible(true);
 			repaint();
 		}
 		public static void main(String[] args)
 	    { Gui gui=new Gui();
+	    
 	    }
 
 		@Override
@@ -134,11 +143,38 @@ import javax.swing.JPanel;
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			Color kolorek = Color.white;
+		
 			// TODO Auto-generated method stub
 		//	System.out.println(e.getY()+"  "+e.getX());
 			int y=e.getY()/100;
 			int x=e.getX()/100;
 			System.out.println(y+"  "+x);
+			String nazwa=pol[y][x].getPodpis().getText();
+			klikniecia.add(nazwa);
+			int size=klikniecia.size();
+			
+			if(size>1){
+				String gracz=klikniecia.get(size-2).toString();
+				if(gracz.equals("Alan")){
+					kolorek=Color.blue;}
+				else{
+				
+					kolorek=Color.red;}
+				
+				ruch(pol,y,x,klikniecia.get(size-2).toString(),kolorek);
+				out.println("Size"+size);
+				out.println("klikniecia"+klikniecia.get(size-2).toString());
+			}
+			else{
+				ruch(pol,y,x,"",kolorek);
+				out.println(size);
+			}
+			
+			
+			//out.println(nazwa);
+			//ruch(pol,y,x,nazwa);
+			
 //			for(int i=0;i<12;i++){
 //				///
 //				
