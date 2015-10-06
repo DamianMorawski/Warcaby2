@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+//ujednolic x,y pobrawic, zmienic wlascicieli pol i liczyc punkty
 public class Pole extends JPanel {
 	private int pozycjaX;
 	private int pozycjaY;

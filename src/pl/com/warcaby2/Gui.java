@@ -14,14 +14,68 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 	public class Gui extends JFrame implements MouseListener {
-		public Pole pole1;
-		public JPanel panel;
-		public JPanel[][] panele;
-		public JLabel label1;
-		public JLabel label2;
+		private Pole pole1;
+		private JPanel panel;
+		private JPanel[][] panele;
+		private JLabel label1;
+		private JLabel label2;
 		private Object[] pionekgracza2;
-		public Pole [][] pol;
-		public List<String> klikniecia;
+		private Pole [][] pol;
+		private List<String> klikNazwa;
+		private List<Integer> klikX;
+		private List<Integer> klikY;
+		private Gracz[] tabgraczy;
+		public static int kogoruch=1;
+		
+	public boolean sprawdz_zmiane(int x1, int x2, int y1, int y2, String gracz) {
+		boolean czymozna = false;
+		// zmienne Y to dla mnie x
+		if (gracz.equals("Alan")) {
+
+			out.println("Y" + x1 + "" + x2 + " X " + y1 + "" + y2);
+			out.println(y2 - y1 + "  " + (x2 - x1));
+			// czymozna=true;
+			if (x2 - x1 == 1 && (y2 - y1 == 1 || y2 - y1 == -1)) {
+
+				czymozna = true;
+			}
+			out.println("Y" + x1 + "" + x2 + " X " + y1 + "" + y2);
+			out.println(y2 - y1 + "  " + (x2 - x1));
+			//out.print(pol[x1+1][y1+1].getWlasciciel().getNazwa());
+			// czymozna=true;
+			if (x2 - x1 == 2 && (y2 - y1 == 2 || y2 - y1 == -2) && (pol[x1+1][y1+1].getPodpis().getText().equals("Bob") ||
+					pol[x1+1][y1-1].getPodpis().getText().equals("Bob")))  {
+
+				czymozna = true;
+			}
+
+		}
+
+		if (gracz.equals("Bob")) {
+			out.println("Y" + x1 + "" + x2 + " X " + y1 + "" + y2);
+			out.println(y2 - y1 + "  " + (x2 - x1));
+			// czymozna=true;
+			if (x2 - x1 == -1 && (y2 - y1 == 1 || y2 - y1 == -1)) {
+
+				czymozna = true;
+			}
+			out.println("Y" + x1 + "" + x2 + " X " + y1 + "" + y2);
+			out.println(y2 - y1 + "  " + (x2 - x1));
+			//out.print(pol[x1+1][y1+1].getWlasciciel().getNazwa());
+			// czymozna=true;
+			if (x2 - x1 == -2 && (y2 - y1 == 2 || y2 - y1 == -2) && (pol[x1-1][y1+1].getPodpis().getText().equals("Alan") ||
+					pol[x1-1][y1-1].getPodpis().getText().equals("Alan")))  {
+
+				czymozna = true;
+			}
+
+		}
+
+		
+
+		out.println(czymozna);
+		return czymozna;
+	}
 		
 		//majac anonimowe labele a nie anonimowe panele bede mogl sie odniesc do labelki?
 		//tablica paneli i pol musi byc widoczna wszedzie
@@ -29,13 +83,77 @@ import javax.swing.JPanel;
 		
 		tab_pole[x][y].getPodpis().setText(nazwa);
 		tab_pole[x][y].getPodpis().setForeground(kolorek);;
+//		if(tabgraczy[0].getNazwa().equals(nazwa))
+//				{
+//			tab_pole[x][y].setWlasciciel(tabgraczy[0]);
+//		}
+//		//
+//		if(tabgraczy[1].getNazwa().equals(nazwa))
+//		{
+//	tab_pole[x][y].setWlasciciel(tabgraczy[0]);
+//}
+	}
+//-------------------------------------------------------------------------------------------
+	public void warunki(int size, int x, int y, Color kolorek) {
+		if (klikNazwa.get(size - 2).toString().equals("") || (klikNazwa.get(size - 1).toString().length()>0)) {// jesli klikne w
+															// puste pole jako 1
+															// klik + klikne 2 raz w gracza
+			klikNazwa.clear(); // wyzerowanie listy tylko 2 elementy max}
+			klikX.clear();
+			klikY.clear();
+			out.println("Powtórz operacje klik w puste pole badz w gracza "+size);
+		} else {
+			out.println(klikNazwa.get(size - 2).toString());
+			if(sprawdz_zmiane(klikY.get(0),y, klikX.get(0),x,klikNazwa.get(size - 2).toString())){ //jesli mozna to dokona zmiany
+			ruch(pol, y, x, klikNazwa.get(size - 2).toString(), kolorek); //wstawienie pola w nowe miejsce
+			out.println("Size" + size);
+			out.println("klikniecia" + klikNazwa.get(size - 2).toString());
+
+			ruch(pol, klikY.get(0), klikX.get(0), "", kolorek);  //skasowanie starej pozycji
+			klikNazwa.clear();
+			klikX.clear();
+			klikY.clear();}
+		} // wyzerowanie listy tylko 2 elementy max}
+	}
+//-------------------------------------------------------------------------------------------------	
+	public boolean  funkcja_ruchu(int x,int y){
+		boolean stan=true;
+		Color kolorek = Color.white; //kolor na poczatek
+		System.out.println(y+"  "+x);
+		String nazwa=pol[y][x].getPodpis().getText();//wpisanie 1 lub 2 klikniecia
+		klikNazwa.add(nazwa);
+		klikX.add(x);
+		klikY.add(y);
+		int size=klikNazwa.size();
 		
+		if(size>1  ){
+			
+			String gracz=klikNazwa.get(size-2).toString();
+					if(gracz.equals("Alan")){
+						kolorek=Color.blue;}
+					else{
+					
+						kolorek=Color.red;}
+					warunki(size, x, y, kolorek);
+			
+			
+		}
+		else{
+			//ruch(pol,y,x,"",kolorek);
+			out.println("Kliknij w wolne pole "+size);
+		}
+		Gui.setKogoruch(Gui.getKogoruch()+2);
+		
+return stan;
 	}
 
 	public Pole[][] inicjuj_tablice() {
 		JPanel[][] panele = new JPanel[8][8];
 		Gracz gracz3=new Gracz("Alan",Color.BLUE);
 		Gracz gracz4=new Gracz("Bob",Color.RED);
+		tabgraczy=new Gracz[2];
+		tabgraczy[0]=gracz3;
+		tabgraczy[1]=gracz4;
 		int licznik=0;
 		Pole[][] tab_pole = new Pole[8][8];
 		Color kolor_startu;
@@ -44,7 +162,7 @@ import javax.swing.JPanel;
 
 				if ((i + j) % 2 == 1) {
 					kolor_startu = Color.black;
-					out.println(+licznik);
+					//out.println(+licznik);
 					
 					
 					switch (licznik) {
@@ -114,7 +232,11 @@ import javax.swing.JPanel;
 			
 			 pol=new Pole[8][8]; //tab pol wszystkich
 			pol=inicjuj_tablice();
-			 klikniecia = new ArrayList<String>();
+			
+			
+			 klikNazwa = new ArrayList<String>();
+			 klikX = new ArrayList<Integer>();
+			 klikY = new ArrayList<Integer>();
 			setVisible(true);
 			repaint();
 		}
@@ -143,42 +265,13 @@ import javax.swing.JPanel;
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			Color kolorek = Color.white;
-		
-			// TODO Auto-generated method stub
-		//	System.out.println(e.getY()+"  "+e.getX());
+			
 			int y=e.getY()/100;
 			int x=e.getX()/100;
-			System.out.println(y+"  "+x);
-			String nazwa=pol[y][x].getPodpis().getText();
-			klikniecia.add(nazwa);
-			int size=klikniecia.size();
-			
-			if(size>1){
-				String gracz=klikniecia.get(size-2).toString();
-				if(gracz.equals("Alan")){
-					kolorek=Color.blue;}
-				else{
-				
-					kolorek=Color.red;}
-				
-				ruch(pol,y,x,klikniecia.get(size-2).toString(),kolorek);
-				out.println("Size"+size);
-				out.println("klikniecia"+klikniecia.get(size-2).toString());
-			}
-			else{
-				ruch(pol,y,x,"",kolorek);
-				out.println(size);
-			}
-			
-			
-			//out.println(nazwa);
-			//ruch(pol,y,x,nazwa);
-			
-//			for(int i=0;i<12;i++){
-//				///
-//				
-//			}
+			// TODO Auto-generated method stub
+		//	System.out.println(e.getY()+"  "+e.getX());
+			if(pol[x][y].getColor().equals(Color.black)){
+				funkcja_ruchu(x, y);}
 			
 			repaint();
 			
@@ -197,6 +290,15 @@ import javax.swing.JPanel;
 			// TODO Auto-generated method stub
 			
 		}
+
+		public static int getKogoruch() {
+			return kogoruch;
+		}
+
+		public static void setKogoruch(int kogoruch) {
+			Gui.kogoruch = kogoruch;
+		}
+		
 	}
 
 
