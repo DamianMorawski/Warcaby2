@@ -2,7 +2,6 @@ package pl.com.warcaby2;
 
 import java.awt.Color;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 //ujednolic x,y pobrawic, zmienic wlascicieli pol i liczyc punkty
