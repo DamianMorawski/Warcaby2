@@ -29,44 +29,42 @@ import javax.swing.JPanel;
 		private static int ile;
 		
 		
-	public boolean sprawdz_zmiane(int x1, int x2, int y1, int y2, String gracz) {
+	public boolean sprawdz_zmiane(int x1, int x2, int y1, int y2, String gracz) {//checkMove
 		boolean czymozna = false;
 		// zmienne Y to dla mnie x
 		if (gracz.equals("Alan")) {
 
-			out.println("X" + x1 + "" + x2 + " Y " + y1 + "" + y2);
-			out.println(x2 - x1 + "  " + (y2 - y1));
+//			out.println("X" + x1 + "" + x2 + " Y " + y1 + "" + y2);
+//			out.println(x2 - x1 + "  " + (y2 - y1));
 			// czymozna=true;
 			if (y2 - y1 == 1 && (x2 - x1 == 1 || x2 - x1 == -1)) {
 
 				czymozna = true;
 			}
-			out.println("X" + x1 + "" + x2 + " Y " + y1 + "" + y2);
-			out.println(x2 - x1 + "  " + (y2 - y1));
-			// out.print(pol[x1+1][y1+1].getWlasciciel().getNazwa());
-			// czymozna=true;
+			
+			
 			if (x2 - x1 == 2 && y2 - y1 == 2) {
 				Gui.setIle(1);
-				out.print(" punkt1");
+			
 
 			}
 			if (x2 - x1 == -2 && y2 - y1 == 2) {
 				Gui.setIle(-1);
-				out.print(" punkt2");
+				
 			}
-			if (ile != 0 && pol[x1 + Gui.getIle()][(y1 + 1)].getPodpis().getText().equals("Bob")) {
+			if (ile != 0 && pol[x1 + Gui.getIle()][(y1 + 1)].getPodpis().getText().equals("Bob")) {//niesprawdzaj pustego miejsca do poprawy
 				// Gui.setile(ile);
-				out.print(" punkt3 " + (x1 + Gui.getIle()) + "  " + (y1 + 1));
+			
 				ruch(pol, x1 + Gui.getIle(), (y1 + 1), "", null); // usuwanie
 																	// gracza
 				czymozna = true;
 			}
+			Gui.setIle(0);//reset pola
 
 		}
 
 		if (gracz.equals("Bob")) {
-			out.println("X" + x1 + "" + x2 + " Y " + y1 + "" + y2);
-			out.println(x2 - x1 + "  " + (y2 - y1));
+			
 			// czymozna=true;
 			if (y2 - y1 == -1 && (x2 - x1 == 1 || x2 - x1 == -1)) {
 
@@ -76,38 +74,37 @@ import javax.swing.JPanel;
 			// czymozna=true;
 			if (x2 - x1 == 2 && y2 - y1 == -2) {
 				Gui.setIle(1);
-				out.print(" punkt1");
+				
 
 			}
 			if (x2 - x1 == -2 && y2 - y1 == -2) {
 				Gui.setIle(-1);
-				out.print(" punkt2");
+				
 			}
 			if (ile != 0 && pol[x1 + Gui.getIle()][(y1 - 1)].getPodpis().getText().equals("Alan")) {
 				// Gui.setile(ile);
-				out.print(" punkt3 " + (x1 + Gui.getIle()) + "  " + (y1 - 1));
+				
 				ruch(pol, x1 + Gui.getIle(), (y1 - 1), "", null); // usuwanie
 																	// gracza
 				czymozna = true;
-			}
+			}Gui.setIle(0);//reset pola
 
 		}
 
-		out.println(czymozna);
 		return czymozna;
 	}
 		
 		//majac anonimowe labele a nie anonimowe panele bede mogl sie odniesc do labelki?
 		//tablica paneli i pol musi byc widoczna wszedzie
-	public void ruch(Pole[][] tab_pole,int x,int y,String nazwa,Color kolorek){
+	public void ruch(Pole[][] tab_pole,int x,int y,String nazwa,Color kolorek){//setMove
 		
 		tab_pole[x][y].getPodpis().setText(nazwa);
 		tab_pole[x][y].getPodpis().setForeground(kolorek);;
 
 	}
 //-------------------------------------------------------------------------------------------
-	public void warunki(int size, int x, int y, Color kolorek) {
-		if (klikNazwa.get(size - 2).toString().equals("") || (klikNazwa.get(size - 1).toString().length()>0)) {// jesli klikne w
+	public void warunki(int size, int x, int y, Color kolorek) {//checkClick
+		if ( (klikNazwa.get(size - 1).toString().length()>0)) {// jesli klikne w
 															// puste pole jako 1
 															// klik + klikne 2 raz w gracza
 			klikNazwa.clear(); // wyzerowanie listy tylko 2 elementy max}
@@ -115,11 +112,10 @@ import javax.swing.JPanel;
 			klikY.clear();
 			out.println("Powtórz operacje klik w puste pole badz w gracza "+size);
 		} else {
-			out.println(klikNazwa.get(size - 2).toString());
+			//out.println(klikNazwa.get(size - 2).toString());
 			if(sprawdz_zmiane(klikX.get(0),x, klikY.get(0),y,klikNazwa.get(size - 2).toString())){ //jesli mozna to dokona zmiany
 			ruch(pol, x, y, klikNazwa.get(size - 2).toString(), kolorek); //wstawienie pola w nowe miejsce
-			out.println("Size" + size);
-			out.println("klikniecia" + klikNazwa.get(size - 2).toString());
+			//out.println("klikniecia" + klikNazwa.get(size - 2).toString());
 
 			ruch(pol, klikX.get(0), klikY.get(0), "", kolorek);  //skasowanie starej pozycji
 			klikNazwa.clear();
@@ -128,18 +124,23 @@ import javax.swing.JPanel;
 		} // wyzerowanie listy tylko 2 elementy max}
 	}
 //-------------------------------------------------------------------------------------------------	
-	public boolean  funkcja_ruchu(int x,int y){
+	public boolean  funkcja_ruchu(int x,int y){//Move
 		boolean stan=true;
 		Color kolorek = Color.white; //kolor na poczatek
-		System.out.println(x+" - "+y);
+		
 		String nazwa=pol[x][y].getPodpis().getText();//wpisanie 1 lub 2 klikniecia
 		klikNazwa.add(nazwa);
 		klikX.add(x);
 		klikY.add(y);
 		int size=klikNazwa.size();
-		
+		if(klikNazwa.get(0).toString().equals("")){
+		klikNazwa.clear(); // wyzerowanie listy tylko 2 elementy max}
+		klikX.clear();
+		klikY.clear();
+		out.println("Powtórz operacje klik w puste pole badz w gracza "+klikNazwa.size());}
+		 size=klikNazwa.size();
 		if(size>1  ){
-			
+			//out.println(klikNazwa.get(size-2).toString());
 			String gracz=klikNazwa.get(size-2).toString();
 					if(gracz.equals("Alan")){
 						kolorek=Color.blue;}
@@ -159,7 +160,7 @@ import javax.swing.JPanel;
 return stan;
 	}
 
-	public Pole[][] inicjuj_tablice() {
+	public Pole[][] inicjuj_tablice() {//setBoard
 		JPanel[][] panele = new JPanel[8][8];
 		Gracz gracz3=new Gracz("Alan",Color.BLUE);
 		Gracz gracz4=new Gracz("Bob",Color.RED);
@@ -222,7 +223,7 @@ return stan;
 				}
 			}
 		}
-		//tab_pole[0][5].getPodpis().setText("POP");
+		
 
 		return tab_pole;
 	}
@@ -231,15 +232,14 @@ return stan;
 		//-------------------------------------------------------------------------------------------------------------------
 		public Gui() {
 			super( "Warcaby" );
-			//this.pole1=pole1;
-			//pole1=new Pole();
+			
 			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setSize(800, 800);
 			setLocation(400,50);
 			setLayout(new GridLayout(8, 8));
 			 addMouseListener(this);
-			//rysuj_szachownice();
+		
 			//RYSUJEMY GUI 64 pola
 			
 			 pol=new Pole[8][8]; //tab pol wszystkich
@@ -281,9 +281,9 @@ return stan;
 			int y=e.getY()/100;
 			int x=e.getX()/100;
 			// TODO Auto-generated method stub
-		//	System.out.println(e.getY()+"  "+e.getX());
+		
 			if(pol[x][y].getColor().equals(Color.black)){
-				System.out.println(" Mouse "+x+"  "+y);
+				//System.out.println(" Mouse "+x+"  "+y);
 				funkcja_ruchu(x, y);}
 			
 			repaint();
